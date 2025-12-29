@@ -1,26 +1,43 @@
-<template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
-</template>
-
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import AppHeader from "./components/AppHeader.vue";
+import ProductList from "./components/ProductList.vue";
+import CardWrapper from "./components/CardWrapper.vue";
 
 export default {
-  name: 'App',
   components: {
-    HelloWorld
+    AppHeader,
+    ProductList,
+    CardWrapper
+  },
+  data() {
+    return {
+      products: []
+    };
+  },
+  mounted() {
+    this.products = [
+      { id: 1, name: "Laptop", price: 50000 },
+      { id: 2, name: "Mobile", price: 20000 },
+      { id: 3, name: "Headphones", price: 3000 }
+    ];
+  },
+  methods: {
+    removeProduct(id) {
+      this.products = this.products.filter(p => p.id !== id);
+    }
   }
-}
+};
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+<template>
+  <AppHeader title="Product Dashboard" />
+
+  <CardWrapper>
+    <p>Total Products: {{ products.length }}</p>
+  </CardWrapper>
+
+  <ProductList
+    :products="products"
+    @delete="removeProduct"
+  />
+</template>
